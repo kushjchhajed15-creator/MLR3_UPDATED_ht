@@ -1,0 +1,108 @@
+---
+#  GSoC Hard Task: download a HF data set and convert it to a Task. (using only R code, not python nor reticulate)
+---
+#                              1] My Logic & Dataset Choice
+
+## Iris Dataset Implementation
+<U>I started with the Iris dataset because it is the standard for testing HARD TASK. My purpose here was to establish a concept for the simple download of a HF dataset and its direct conversion into an 'mlr3' task.</U>
+
+
+
+
+```text
++-------------------------------------------------------------------------------|
+|      IRIS DOWNLOAD PROCEDURE                                                  |
++-------------------------------------------------------------------------------|
+|                                                                               |
+|  1]SITE WHICH IS MENTIONED ON WIKI !                                          |
+|   (https://huggingface.co/datasets)                                           |
+|               |                                                               |
+|               v                                                               |
+|  2]     IRIS DATASET                                                          |
+|     (Repo: scikit-learn/iris)                                                 |
+|               |                                                               |             
+|               v                                                               |
+|  3] GONE INTO 'FILES AND VERSIONS'                                            |
+|         ( 'Iris.csv')                                                         |
+|               |                                                               |
+|               v                                                               |
+|  4]  COPY DOWNLOAD  LINK                                                      |
+|   (https://huggingface.co/datasets/scikit-learn/iris/resolve/main/Iris.csv)   | 
+|                                                                               | 
+|                                                                               |
++-------------------------------------------------------------------------------|
+```
+
+#                                 2]CODE OF IRIS (BASIC)
+```{r}
+   
+library(mlr3)
+
+                        # 1] Download-
+ iris_url <- "https://huggingface.co/datasets/scikit-learn/iris/resolve/main/Iris.csv"
+ iris_df  <- read.csv(iris_url, stringsAsFactors = TRUE)
+ 
+ iris_df$Id <- NULL      
+ 
+                       # 2] Initialize Task 
+ task_iris <- as_task_classif(iris_df, target = "Species", id = "iris")
+ 
+ # 3] Calling the Task
+ print(task_iris)
+```
+
+#                                 3] ANOTHER DATASET (Continued)
+
+## Pima Indians Diabetes Implementation
+<U>When  I successfully understood the dataset of Iris, I implemented the Pima Indians Diabetes dataset to **strengthen the hard task**. Moving to this dataset allowed me to demonstrate more  data handling, such as managing binary classes and ensuring correct feature types in a real-world medical context.</U>
+
+---
+
+
+
+```text
++---------------------------------------------------------------------------------------------------------|
+|      PIMA DOWNLOAD PROCEDURE                                                                            |
++---------------------------------------------------------------------------------------------------------|
+|                                                                                                         |
+|  1]SITE WHICH IS MENTIONED ON WIKI !                                                                    |
+|    (https://huggingface.co/datasets)                                                                    |
+|               |                                                                                         |
+|               v                                                                                         |
+|  2] PIMA INDIANS DIABETES DATASET                                                                       |
+|                                                                                                         |  
+|     ( khoaguin/pima-indians-                                                                            |
+|         diabetes-database)                                                                              |
+|               |                                                                                         |
+|               v                                                                                         |
+|  3] GONE INTO 'FILES AND VERSIONS'                                                                      |
+|        ('diabetes.csv')                                                                                 |
+|               |                                                                                         |
+|               v                                                                                         | 
+|  4] COPY DOWNLOAD LINK                                                                                  |
+|     (https://huggingface.co/datasets/khoaguin/pima-indians-diabetes-database/resolve/main/diabetes.csv) |
+|                                                                                                         |
+|                                                                                                         |
++---------------------------------------------------------------------------------------------------------|
+```
+#   NOTE:- FLOwCHART ARE MENSIONED TO IDENTIFY HUGGING FACE DATASET DOWNLOAD PROCEDURE.
+
+#                     4] CODE OF PIMA INDIAN DIABETES
+
+```{r}
+  
+library(mlr3)
+
+                                 # 1] Download
+ pima_url <- "https://huggingface.co/datasets/khoaguin/pima-indians-diabetes-database/resolve/main/diabetes.csv"
+ pima_df  <- read.csv(pima_url)
+
+
+ pima_df$y <- as.factor(pima_df$y)
+
+                            # 2] Initialize Task 
+ task_pima <- as_task_classif(pima_df, target = "y", id = "pima")
+
+ # 3]  Calling the Task
+ print(task_pima)
+```
